@@ -5,13 +5,14 @@ const path = require("path")
 
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
-
+const {PubSub} = require('apollo-server');
 const { PrismaClient } = require("@prisma/client");
 const { ApolloServer } = require('apollo-server');
 
 const { getUserId } = require('./utils')
 
 
+const pubsub = new PubSub();
 
 const resolvers = {
     Query: {
@@ -20,7 +21,7 @@ const resolvers = {
             return context.prisma.link.findMany()
         },
         userList: async (parent, args, context) => {
-            console.log(context.userId)
+
             return context.prisma.user.findMany()
         }
     },
@@ -33,6 +34,7 @@ const resolvers = {
                     description: args.description
                 }
             })
+            context.pubsub.publish("NEW_LINK", newLink);
             return newLink;
         },
         updateLink: async (parent, args, context, info) => {
@@ -87,12 +89,36 @@ const resolvers = {
         }
     },
 
+    Subscription: {
+        newLink: {
+            subscribe: (root, args, context, info) => {
+                return context.pubsub.asyncIterator("NEW_LINK");
+                
+            },
+            resolve: payload => {
+                return payload
+            }
+        } 
+    },
+
     Link: {
         id: (parent) => parent.id,
         description: (parent) => parent.description,
         url: (parent) => parent.url,
     }
 }
+
+// function newLinkSubscription(root, args, context, info){
+//     return context.pubsub.AsyncIterator("NEW_LINK");
+    
+// }
+
+// const newLink = {
+//     subscribe: newLinkSubscription,
+//     resolve: payload => {
+//         return payload
+//     }
+// }
 
 const prisma = new PrismaClient()
 
@@ -105,7 +131,9 @@ const server = new ApolloServer({
     resolvers,
     context: ( {req} ) => {
         return {
+            ...req,
             prisma,
+            pubsub,
             userId: req && req.headers.authorization ? getUserId(req) : null
         }
     }

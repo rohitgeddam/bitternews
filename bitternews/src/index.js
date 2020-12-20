@@ -28,8 +28,16 @@ const resolvers = {
 
             const links = await context.prisma.link.findMany({
                 where,
+                skipk: args.skip,
+                take: args.take,
+                orderBy: args.orderBy
             })
-            return context.prisma.link.findMany()
+            const count = await context.prisma.link.count({where})
+
+            return {
+                links,
+                count,
+            }
         },
         userList: async (parent, args, context) => {
 

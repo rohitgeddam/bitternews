@@ -86,6 +86,51 @@ const resolvers = {
                 token,
                 user
             };
+        },
+
+        vote: async (parent, args, context, info) => {
+            const userId = getUserId(context)
+
+            const vote = await context.prisma.vote.findUnique({
+                where: {
+                    linkId_userId: {
+                        linkId: Number(args.linkId),
+                        userId: userId
+                    }
+                }
+            })
+
+            if (Boolean(vote)) {
+                throw new Error(`Already voted for link: ${args.linkId}`)
+            }
+
+            const newVote = context.prisma.vote.create({
+                data: {
+                    user: { connect: { id: userId }},
+                    link: { connect: { id: Number(args.linkId)} },
+                }
+            })
+            context.pubsub.publish("NEW_VOTE", newVote)
+
+            return newVote
+        },
+        Link: {
+            votes: (parent, args, context) => {
+                return context.prisma.link.findUnique({
+                    where: {
+                        id: parent.id
+                    }
+                }).votes()
+            }
+        },
+
+        Vote: {
+            link: (parent, args, context) => {
+                return context.prisma.vote.findUnique({ where: { id: parent.id } }).link()
+              },
+            user: (parent, args, context) => {
+                return context.prisma.vote.findUnique({ where: { id: parent.id } }).user()
+              }
         }
     },
 
@@ -98,7 +143,15 @@ const resolvers = {
             resolve: payload => {
                 return payload
             }
-        } 
+        },
+        newVote: {
+            subscribe: (root, args, context, info) => {
+                return context.pubsub.asyncIterator("NEW_VOTE")
+            },
+            resolve: payload => {
+                return payload
+            }
+        }
     },
 
     Link: {

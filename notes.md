@@ -40,3 +40,46 @@
     * Constructor of GraphQLServer can directly take a string or a file for typeDef parameter
 
     * implement resolver for the mutation field
+
+
+# Adding a database
+*   add SQLite
+*   use prisma instead of writing sql directly.
+    *   ### What is prisma
+        *   provides clean type-safe api for submitting db queries
+        *   consists of 3 tools
+            *   prisma client -> an auto-generated and type-safe query builer for node.js and ts
+            *   prisma migrate
+            *   prisma studio
+        * Install Prisma
+          * 1) npm install @prisma/cli --save-dev
+          * 2) npx prisma init
+          * we have been working with schema.graphql file ourself but prisma also has as schema, inside prisma directory that was created with npx prisma init. Think of prisma.schema file as a db-schema
+            * It has 3 components
+              * Data source -> specify your db connection
+              * Generator -> indicates that you want to generate prisma client
+              * Data model -> defines you app models. maps to underlying db
+          * Edit schema.prisma
+  * ╰─$ 3) npx prisma migrate dev --name init --preview-feature  1 ↵
+  * new /migrations directory is created
+  * NOT REQUIRED -> npx prisma migrate up --experimental
+  * we now have a db with Link table
+  * Now generate prisma client based on your data model
+  * 4) npx prisma generate
+  * we now have /node_modules/@prisma/client which can be imported and used in your code
+
+
+## writing query with prisma client
+* import { PrismaClient } = require("@prisma/client")
+* const prisma = new PrismaClient()
+* define async function called main to send querirs to db. write all queries inside this fn
+* call the main fn
+* close db connections when sript terminates
+
+## Summary of your workflow
+To recap, this is the typical workflow you will follow when updating your data:
+
+* Manually adjust your Prisma data model.
+* Migrate your database using the prisma migrate CLI commands we covered.
+(Re-)generate Prisma Client
+* Use Prisma Client in your application code to access your database.

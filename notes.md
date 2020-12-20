@@ -26,3 +26,17 @@
   * queries, mutations, subscriptions on api always need to start with a root field
   * When the type of a root field is an object type, you can further expand the query (or mutation/subscription) with fields of that object type. The expanded part is called selection set.
   * schema can have scalar types and object types
+
+* Adding simple query
+  * extend the graphql schema defination with a new root field and new object fields if required
+  * impement corrosponding resolver functions for the added fields
+  * also known as schema-driven or schema-first development.
+
+* Adding Mutations
+  * Extend the typeDef with Mutation root type.
+
+###### pro-tip -> Pull schema into its own file
+    * create a new file src/schema.graphql
+    * Constructor of GraphQLServer can directly take a string or a file for typeDef parameter
+
+    * implement resolver for the mutation field

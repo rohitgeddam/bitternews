@@ -83,3 +83,25 @@ To recap, this is the typical workflow you will follow when updating your data:
 * Migrate your database using the prisma migrate CLI commands we covered.
 (Re-)generate Prisma Client
 * Use Prisma Client in your application code to access your database.
+
+
+# Connecting the server and db with prisma
+* use the graphql context paramenter in resolvers to pass prisma client
+* The context argument is a plain JavaScript object that every resolver in the resolver chain can read from and write to. Thus, it is basically a means for resolvers to communicate. A really helpful feature is that you can already write to the context at the moment when the GraphQL server itself is being initialized.
+
+This means that we can attach an instance of Prisma Client to the context when initializing the server and then access it from inside our resolvers via the context argument!
+
+```
+const server = new ApolloServer({
+    typeDefs: fs.readFileSync(
+        path.join(__dirname, 'schema.graphql'),
+        'utf8'
+    ),
+    resolvers,
+    context: {
+        prisma,
+    }
+})
+```
+
+* npx prisma studio

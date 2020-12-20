@@ -2,59 +2,35 @@
 
 const fs = require("fs")
 const path = require("path")
-const { ApolloServer } = require('apollo-server')
+
+const { PrismaClient } = require("@prisma/client");
+const { ApolloServer } = require('apollo-server');
 
 
-let links = [{
-    id: 'link-0',
-    url: 'www.howtographql.com',
-    description: 'Fullstack tutorial for GraphQL'
-  }]
-let idCount = links.length
-
-
-// 2
 const resolvers = {
     Query: {
         info: () => `This is the API of Bitternews`,
-        feed: () => links,
+        feed: async (parent, args, context) => {
+            return context.prisma.link.findMany()
+        } 
     },
 
     Mutation: {
-        post: (parent, args) => {
-            post = {
-                id: `Link-${idCount++}`,
-                url: args.url,
-                description: args.description,
-            }
-            links.push(post);
-            return post;
-        },
-        updateLink: (parent, args, ctx, info) => {
-            let id = args.id;
-            for(link of links) {
-                if ( link.id === id ){
-                    // update
-                    if ( args.description ) {
-                        link.description = args.description
-                    }
-                    if ( args.url ) {
-                        link.url = args.url
-                    }
-                    return link;
+        post: async (parent, args, context) => {
+            const newLink = context.prisma.link.create({
+                data: {
+                    url: args.url,
+                    description: args.description
                 }
-            }
+            })
+            return newLink;
+        },
+        updateLink: async (parent, args, context, info) => {
+
         },
 
-        deleteLink: (parent, args, ctx, info) => {
-            let id = args.id;
-            for(link of links) {
-                if ( link.id === id ){
-                    // delete
-                    links = links.filter((link) => { link.id !== id })
-                    return link;
-                }
-            }
+        deleteLink: (parent, args, context, info) => {
+
         }
     },
 
@@ -65,6 +41,8 @@ const resolvers = {
     }
 }
 
+const prisma = new PrismaClient()
+
 // 3
 const server = new ApolloServer({
     typeDefs: fs.readFileSync(
@@ -72,6 +50,9 @@ const server = new ApolloServer({
         'utf8'
     ),
     resolvers,
+    context: {
+        prisma,
+    }
 })
 
 server.listen().then( url => {

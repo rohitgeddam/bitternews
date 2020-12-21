@@ -105,3 +105,88 @@ const server = new ApolloServer({
 ```
 
 * npx prisma studio
+
+# Graphql Subscriptions
+* send realtime updates to subscribed clients when a new Link element is created
+* send realtime updates to subscribed clients when an existing Link element is upvoted
+  
+* subscriptions are graphql feature that allows a server to send data to its clients when a specific even happes. ususlaly implements with websockets.
+* The client initially opens a long-lived connection to the server by sending subscription query that specifies which event it is interested in.
+
+# Implementing Graphql Subscriptions
+* use **PubSub from apollo-server** to implement subscriptions for following events
+  * a new model is created
+  * an existing model is updated
+  * an existing model is deleted
+* add an instance of PubSub to the context
+
+# setting up pubsub
+```
+const {PubSub} = require('apollo-server');
+const pubsub = new PubSub();
+
+<!-- pass pubsub into the context of apollo server instance. -->
+
+```
+
+# subscribing to new link element
+```
+    <!-- in schema -->
+
+    type Subscription {
+        newLink: Link
+    }
+```
+now add a resolver
+* resolver for subscription are slightly different
+  * they dont return any data directly, they return an `AsyncIterator` which is then used by the GraphQl server to push the event data to the client.
+  * Subscriptions resolvers are wrapped inside an object and need to be provided as the value for a `subscribe` field. you may also need to provide another field called `resolve` that actually returns the data from the data emitted by the `AsyncIterator`
+
+```js
+function newLinkSubscribe(parent, args, context, info) {
+  return context.pubsub.asyncIterator("NEW_LINK")
+}
+
+const newLink = {
+  subscribe: newLinkSubscribe,
+  resolve: payload => {
+    return payload
+  },
+}
+
+module.exports = {
+    newLink,
+}
+```
+
+# adding the above subscriptions to your other resolvers
+* this is the last step to implement subscriptions, we need to actually call this function inside of a resolver!
+  
+```js
+// inside post resolver
+async function post(parent, args, context, info) {
+  const userId = getUserId(context)
+
+  const newLink = await context.prisma.link.create({
+    data: {
+      url: args.url,
+      description: args.description,
+      postedBy: { connect: { id: userId } },
+    }
+  })
+  context.pubsub.publish("NEW_LINK", newLink)
+
+  return newLink
+}
+```
+
+# Filtering
+
+# Pagination
+*   Limit-offset
+*   Cursor-based
+    *   skip, take
+
+# Sorting
+    * input type
+    * enum type

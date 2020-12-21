@@ -133,24 +133,6 @@ const resolvers = {
 
             return newVote
         },
-        Link: {
-            votes: (parent, args, context) => {
-                return context.prisma.link.findUnique({
-                    where: {
-                        id: parent.id
-                    }
-                }).votes()
-            }
-        },
-
-        Vote: {
-            link: (parent, args, context) => {
-                return context.prisma.vote.findUnique({ where: { id: parent.id } }).link()
-              },
-            user: (parent, args, context) => {
-                return context.prisma.vote.findUnique({ where: { id: parent.id } }).user()
-              }
-        }
     },
 
     Subscription: {
@@ -177,6 +159,21 @@ const resolvers = {
         id: (parent) => parent.id,
         description: (parent) => parent.description,
         url: (parent) => parent.url,
+        votes: (parent, args, context) => {
+            return context.prisma.link.findUnique({
+                where: {
+                    id: parent.id
+                }
+            }).votes()
+        }
+    },
+    Vote: {
+        link: (parent, args, context) => {
+            return context.prisma.vote.findUnique({ where: { id: parent.id } }).link()
+          },
+        user: (parent, args, context) => {
+            return context.prisma.vote.findUnique({ where: { id: parent.id } }).user()
+          }
     }
 }
 

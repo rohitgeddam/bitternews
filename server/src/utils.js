@@ -3,6 +3,18 @@ const bcrypt = require("bcryptjs")
 
 const JWT_SECRET = process.env.JWT_SECRET
 
+const hashPassword = (password) => {
+  return bcrypt.hashSync(password, 10)
+}
+
+const comparePassword = (password1, password2) => {
+  return bcrypt.compareSync(password1, password2);
+}
+
+const signJwt = (payload) => {
+  return jwt.sign(payload, JWT_SECRET)
+}
+
 const getTokenPayload = (token) => {
     return jwt.verify(token, JWT_SECRET)
 }
@@ -27,5 +39,8 @@ const getUserId = (req, authToken) => {
   }
   
   module.exports = {
-      getUserId
+      signJwt,
+      comparePassword,
+      getUserId,
+      hashPassword
   }

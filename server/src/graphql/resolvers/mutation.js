@@ -1,11 +1,10 @@
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
 
-const JWT_SECRET = process.env.JWT_SECRET || "secret"
+const { signJwt, comparePassword, hashPassword } = require("../../utils")
 
 const mutation = {
  
     addProject: async (root, args, context) => {
+        console.log(context.userId);
         let status = "Failure";
         let data = null;
 
@@ -39,8 +38,8 @@ const mutation = {
         
         if (user) {
             // check password
-            if (bcrypt.compareSync(args.password, user.password)) {
-                let token = jwt.sign({id: user.id}, JWT_SECRET)
+            if (comparePassword(args.password, user.password)) {
+                let token = signJwt({id: user.id})
                 status = "Success"
                 message = "Login Successfull"
                 data = {
@@ -71,7 +70,7 @@ const mutation = {
         const existsUsername = await context.db.User.findOne({username: args.username}).exec()
 
         if (!existsEmail && !existsUsername){
-            hashedPassword = await bcrypt.hash(args.password, 10)
+            hashedPassword = hashPassword(args.password)
         let newUser = new context.db.User({
             username: args.username,
             email: args.email,
@@ -87,7 +86,7 @@ const mutation = {
                     }
             }
         })
-        let token = jwt.sign({id: newUser.id}, JWT_SECRET)
+        let token = signJwt({id: user.id})
             status = "Success"
             message = "user created successfully"
             data = {

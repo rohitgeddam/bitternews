@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = 'annacondalivesontreesbut1234easlions'
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, 10)
@@ -12,14 +12,18 @@ const comparePassword = (password1, password2) => {
 }
 
 const signJwt = (payload) => {
+
   return jwt.sign(payload, JWT_SECRET)
 }
 
 const getTokenPayload = (token) => {
+
     return jwt.verify(token, JWT_SECRET)
+
 }
 
 const getUserId = (req, authToken) => {
+
     if (req) {
       const authHeader = req.headers.authorization;
       if (authHeader) {
@@ -27,12 +31,12 @@ const getUserId = (req, authToken) => {
         if (!token) {
           throw new Error('No token found');
         }
-        const { userId } = getTokenPayload(token);
-        return userId;
+        const { id } = getTokenPayload(token);
+        return id;
       }
     } else if (authToken) {
-      const { userId } = getTokenPayload(authToken);
-      return userId;
+      const { id } = getTokenPayload(authToken);
+      return id;
     }
   
     throw new Error('Not authenticated');

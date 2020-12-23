@@ -4,7 +4,7 @@ const { signJwt, comparePassword, hashPassword } = require("../../utils")
 const mutation = {
  
     addProject: async (root, args, context) => {
-        console.log(context.userId);
+
         let status = "Failure";
         let data = null;
 

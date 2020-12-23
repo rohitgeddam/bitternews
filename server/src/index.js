@@ -5,7 +5,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const resolvers = require('./graphql/resolvers/index')
 const mongooseModels = require("./mongoose.schema")
 
-const { getUseId, getUserId } = require('./utils');
+const { getUserId } = require('./utils');
 
 const dotenv = require('dotenv');
 dotenv.config();

@@ -18,11 +18,19 @@ type User {
   email: String!
   username: String!
   projects: [Project!]!
+}
 
+type Confession {
+  id: ID!
+  message: String!
+  postedOn: Date!
+  postedBy: User!
+  votes: [Vote!]!
 }
 
 type Query {
   allProjects: [Project!]!
+  allConfessions: [Confession!]!
   allUsers: [User!]!
 }
 
@@ -31,10 +39,17 @@ type Mutation {
   signIn(email: String!, password: String!): AuthResponse!
   signUp(email: String!, password: String!, username: String!): AuthResponse!
   vote(votedFor: ID!): VotingResponse
+  addConfession(message: String!):  ConfessionResponse!
 }
 
 interface MutationResponse {
   status: String!
+}
+
+type ConfessionResponse implements MutationResponse {
+  status: String!
+  message: String!
+  data: Confession
 }
 
 type VotingResponse implements MutationResponse {

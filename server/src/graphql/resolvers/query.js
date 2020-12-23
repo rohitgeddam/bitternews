@@ -7,9 +7,13 @@ const query = {
         return context.db.Project.find()
     },
 
-    allUsers: (root, args, context) => {
+    allUsers: async (root, args, context) => {
 
-        return context.db.User.find({})
+        return await context.db.User.find({}).exec()
+    },
+
+    allConfessions: async (root, args, context) => {
+        return await context.db.Confession.find({}).exec()
     }
 }
 

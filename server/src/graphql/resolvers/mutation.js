@@ -151,6 +151,32 @@ const mutation = {
 
         return response;
         
+    },
+
+    addConfession: async (root, args, context) => {
+
+        const response = {
+            status: "Failure",
+            message: "",
+            data: null
+        }
+        const userId = context.userId;
+        const currentUser = await context.db.User.findOne({_id: userId}).exec()
+        const newConfession = await context.db.Confession({
+            message: args.message,
+            postedBy: currentUser,
+        })
+        try {
+            newConfession.save()
+            response.status = "Success";
+            response.message = "Confession Recored Successfully";
+            response.data = newConfession;
+        } catch(err) {
+            console.log(err)
+            response.message = "Failed to recored Confession";
+        }
+
+        return response;
     }
 }
 

@@ -17,6 +17,17 @@ const ProjectSchema = new mongoose.Schema({
 
 })
 
+const ConfessionSchema = new mongoose.Schema({
+    message: {type: String, trim: true},
+    postedOn: {
+        type: Date,
+        default: Date.now
+    },
+    postedBy: Object
+});
+
+// ConfessionSchema.path('message').validate( v => v.length > 125)
+
 const VoteSchema = new mongoose.Schema({
     voter: mongoose.Schema.ObjectId,
     votedFor: mongoose.Schema.ObjectId
@@ -33,9 +44,10 @@ const UserSchema = new mongoose.Schema({
 const Project = mongoose.model('project', ProjectSchema)
 const User = mongoose.model('user', UserSchema)
 const Vote = mongoose.model('vote', VoteSchema) 
-
+const Confession = mongoose.model('confession', ConfessionSchema)
 module.exports = {
     Project,
     User,
-    Vote
+    Vote,
+    Confession
 }

@@ -2,6 +2,7 @@ module.exports = {
     Query: require('./query'),
     Mutation: require('./mutation'),
     Project: require('./project'),
-    User: require('./user')
+    User: require('./user'),
+    Confession: require('./confession')
 };
   

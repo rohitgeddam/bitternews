@@ -2,12 +2,12 @@
 
 
 const query = {
-    projects: async (root, args, context) => {
+    allProjects: async (root, args, context) => {
 
         return context.db.Project.find()
     },
 
-    users: (root, args, context) => {
+    allUsers: (root, args, context) => {
 
         return context.db.User.find({})
     }

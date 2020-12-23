@@ -5,6 +5,12 @@ type Project {
   description: String!
   postedBy: User!
   postedOn: Date!
+  votes: [Vote!]!
+}
+
+type Vote {
+  voter: ID!
+  votedFor: ID!
 }
 
 type User {
@@ -12,23 +18,30 @@ type User {
   email: String!
   username: String!
   projects: [Project!]!
+
 }
 
 type Query {
-  projects: [Project!]!
-  users: [User!]!
+  allProjects: [Project!]!
+  allUsers: [User!]!
 }
 
 type Mutation {
   addProject(title: String!, description: String!): AddProjectResponse!
   signIn(email: String!, password: String!): AuthResponse!
   signUp(email: String!, password: String!, username: String!): AuthResponse!
+  vote(votedFor: ID!): VotingResponse
 }
 
 interface MutationResponse {
   status: String!
 }
 
+type VotingResponse implements MutationResponse {
+  status: String!
+  message: String!
+  data: Vote
+}
 type AuthResponseObject {
   token: String!
   user: User

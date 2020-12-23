@@ -92,7 +92,7 @@ const mutation = {
                     }
             }
         })
-        let token = signJwt({id: user.id})
+        let token = signJwt({id: newUser.id})
             status = "Success"
             message = "user created successfully"
             data = {
@@ -107,6 +107,49 @@ const mutation = {
             message,
             data
         }
+        
+    },
+
+    vote: async (root, args, context) => {
+
+        const voterId = context.userId;
+        const votedForId = args.votedFor;
+
+        // check if already voted
+        const response = {
+            status: "Failure",
+            message: "",
+            data: null
+        }
+
+        const previousVote = await context.db.Vote.findOne({voter: voterId, votedFor: votedForId}).exec();
+        console.log("PREV", previousVote)
+        if(!previousVote){
+            let newVote = context.db.Vote({
+                voter: voterId,
+                votedFor: votedForId,
+            })
+            try {
+                await newVote.save();
+            } catch(err) {
+                return {
+                    status: "Failure",
+                    message: "Failed to record vote",
+                    data: null
+                } 
+            }
+
+            response.status = "Success";
+            response.message = "Voted Successfully";
+            response.data = newVote;
+            
+        } else {
+            response.message = "Already Voted";
+            response.data = previousVote;
+           
+        }
+
+        return response;
         
     }
 }

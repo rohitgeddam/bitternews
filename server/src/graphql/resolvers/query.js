@@ -3,17 +3,43 @@
 
 const query = {
     allProjects: async (root, args, context) => {
+        options = {
+            page: args.page || 1,
+            limit: args.limit || 2
+        }
+        try {
+            const result = await context.db.Project.paginate({}, options)
+            return result;
 
-        return context.db.Project.find()
+        } catch(err){
+            console.log(err);
+        }
     },
 
     allUsers: async (root, args, context) => {
+        try {
+            const result = await context.db.User.find({}).exec()
+            return result;
 
-        return await context.db.User.find({}).exec()
+        } catch(err) {
+            console.log(err)
+        }
     },
 
     allConfessions: async (root, args, context) => {
-        return await context.db.Confession.find({}).exec()
+        
+        options = {
+            page: args.page || 1,
+            limit: args.limit || 2
+        }
+        try {
+            const result =  await context.db.Confession.paginate({}, options)
+            return result; 
+         } catch(err){
+             console.log(err);
+         }
+         
+
     }
 }
 

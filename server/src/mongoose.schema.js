@@ -1,4 +1,5 @@
 const { Mongoose } = require("mongoose");
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const mongoose = require("mongoose")
 const ProjectSchema = new mongoose.Schema({
@@ -39,6 +40,10 @@ const UserSchema = new mongoose.Schema({
     password: String,
     projects: ['Project']
 })
+ProjectSchema.plugin(mongoosePaginate);
+UserSchema.plugin(mongoosePaginate);
+VoteSchema.plugin(mongoosePaginate);
+ConfessionSchema.plugin(mongoosePaginate);
 
 
 const Project = mongoose.model('project', ProjectSchema)

@@ -28,9 +28,63 @@ type Confession {
   votes: [Vote!]!
 }
 
+# type Poll {
+#   id: ID!
+#   question: String!
+#   choices: [PollChoice!]!
+#   startDateTime: DateTime!
+#   endDateTime: DateTime!
+# }
+
+# type PollChoice {
+#   id: ID!
+#   text: String!
+#   votes: [Vote!]!
+# }
+
+interface PaginationResult {
+  totalDocs: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Int
+}
+
+type ConfessionPaginationResult implements PaginationResult {
+  docs: [Confession!]!
+  totalDocs: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Int
+}
+
+type ProjectPaginationResult implements PaginationResult {
+  docs: [Project!]!
+  totalDocs: Int
+  limit: Int
+  totalPages: Int
+  page: Int
+  pagingCounter: Int
+  hasPrevPage: Boolean
+  hasNextPage: Boolean
+  prevPage: Boolean
+  nextPage: Int 
+}
+
+
 type Query {
-  allProjects: [Project!]!
-  allConfessions: [Confession!]!
+  allProjects(page: Int, limit: Int): ProjectPaginationResult!
+  # allConfessions: [Confession!]!
+  allConfessions(page: Int, limit: Int): ConfessionPaginationResult!
   allUsers: [User!]!
 }
 
@@ -74,4 +128,4 @@ type AddProjectResponse implements MutationResponse {
 }
 
 scalar Date
-
+scalar DateTime

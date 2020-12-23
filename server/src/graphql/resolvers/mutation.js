@@ -4,13 +4,19 @@ const { signJwt, comparePassword, hashPassword } = require("../../utils")
 const mutation = {
  
     addProject: async (root, args, context) => {
-
+        
         let status = "Failure";
         let data = null;
 
+        const userId = context.userId;
+
+        const currentUser = await context.db.User.findOne({_id: userId}).exec()
+
+
         let project = new context.db.Project({
             title: args.title,
-            description: args.description
+            description: args.description,
+            postedBy: currentUser
         })
         await project.save((err, project) => {
             if(err){

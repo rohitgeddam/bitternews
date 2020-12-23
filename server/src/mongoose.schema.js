@@ -12,12 +12,15 @@ const project = new mongoose.Schema({
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'User'
     // }
+    postedBy: Object
+
 })
 
 const user = new mongoose.Schema({
     email: {type: String, trim: true, unique: true, required: true},
     username: {type: String, trim: true, unique: true, required: true},
     password: String,
+    projects: [project]
 })
 
 

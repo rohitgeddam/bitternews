@@ -5,9 +5,7 @@ const { ApolloServer, gql } = require('apollo-server');
 const resolvers = require('./graphql/resolvers/index')
 const mongooseModels = require("./mongoose.schema")
 
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
-
+const { getUseId, getUserId } = require('./utils');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -24,8 +22,10 @@ const server = new ApolloServer(
     {   typeDefs: fs.readFileSync(path.join(__dirname, './graphql/schema/schema.graphql'), 'utf-8'),
         resolvers,
         context: ({req}) => ({
+            ...req,
             authScope: true,
             db: mongooseModels,
+            userId: req && req.headers.authorization ? getUserId(req) : null
         })
     });
 

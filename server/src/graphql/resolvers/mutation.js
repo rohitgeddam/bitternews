@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
-const JWT_SECRET = "SeCrET"
+
+const JWT_SECRET = process.env.JWT_SECRET || "secret"
+
 const mutation = {
  
     addProject: async (root, args, context) => {
@@ -27,7 +29,7 @@ const mutation = {
             data
         }
     },
-    
+
     signIn: async (root, args, context ) => {
         let status = "Failure"
         let message = ""

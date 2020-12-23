@@ -2,8 +2,8 @@ const { Mongoose } = require("mongoose");
 
 const mongoose = require("mongoose")
 const project = new mongoose.Schema({
-    title: String,
-    description: String,
+    title: {type: String, trim: true},
+    description: {type: String, trim: true},
     postedOn: {
         type: Date,
         default: Date.now
@@ -15,8 +15,8 @@ const project = new mongoose.Schema({
 })
 
 const user = new mongoose.Schema({
-    email: {type: String, unique: true, required: true},
-    username: {type: String, unique: true, required: true},
+    email: {type: String, trim: true, unique: true, required: true},
+    username: {type: String, trim: true, unique: true, required: true},
     password: String,
 })
 

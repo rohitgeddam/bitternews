@@ -2,25 +2,32 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const JWT_SECRET = "SeCrET"
 const mutation = {
+ 
     addProject: async (root, args, context) => {
+        let status = "Failure";
+        let data = null;
+
         let project = new context.db.Project({
             title: args.title,
             description: args.description
         })
-        project.save((err) => {
+        await project.save((err, project) => {
             if(err){
                 return {
                     status: "Failure",
-                    data: project
+                    data
                 }
-            }
+            } 
         })
 
+        status = "Success"
+        data = project
         return {
-            status: "Success",
-            data: project
+            status,
+            data
         }
     },
+    
     signIn: async (root, args, context ) => {
         let status = "Failure"
         let message = ""
@@ -71,6 +78,11 @@ const mutation = {
         newUser.save((err) => {
             if(err){
                     message = "Failed to save user"
+                    return {
+                        status,
+                        message,
+                        data
+                    }
             }
         })
         let token = jwt.sign({id: newUser.id}, JWT_SECRET)

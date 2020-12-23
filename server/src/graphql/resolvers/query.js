@@ -1,16 +1,19 @@
-const books = [
+
+const projects = [
+
     {
-      title: 'The Awakening',
-      author: 'Kate Chopin',
-    },
-    {
-      title: 'City of Glass',
-      author: 'Paul Auster',
-    },
-  ];
-  
+        id: 0,
+        title: "clone Uber",
+        description: "create a clone of Uber",
+        postedOn: '12-12-2020'
+    }
+]
+
 const query = {
-    books: () => books,
+    projects: async (root, args, context) => {
+
+        return context.db.Project.find()
+    }
 }
 
 module.exports = query;

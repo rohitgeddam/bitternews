@@ -3,10 +3,10 @@ import caret from '../assets/images/bleach.png'; // Tell webpack this JS file us
 function ProjectListItem(props) {
     return (
   
-        <div class="box">
+  <div class="box project-list-item__box">
   <article class="media">
     <div class="media-left upvote-container">
-     <img src={caret} width="16px"/>
+     <button class="upvote-container__button"><img src={caret} width="16px"/></button>
      <small>{props.voteCount}</small>
     </div>
     <div class="media-content">

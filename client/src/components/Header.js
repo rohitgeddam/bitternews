@@ -1,10 +1,11 @@
+import '../styles/Header.scss'
 function Header() {
     return (
   
         <nav class="navbar is-transparent is-spaced is-dark">
 <div class="navbar-brand">
 <a class="navbar-item" href="https://bulma.io">
-<div class="navbar-heading">Bitter</div>
+    <div class="navbar-heading">Bitter</div>
 {/* <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28" /> */}
 </a>
 <div class="navbar-burger" data-target="navbarExampleTransparentExample">

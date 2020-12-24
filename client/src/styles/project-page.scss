@@ -1,0 +1,33 @@
+@import './base.scss';
+
+.box {
+    .title {
+        text-align: center;
+    }
+}
+
+.project-list-item__box {
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    &:hover {
+        transform: scale(1.1);
+    }
+
+}
+
+
+.upvote-container {
+
+    .upvote-container__button{
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+
+    &:hover{
+        transform: scale(1.5);
+    }
+    }
+}

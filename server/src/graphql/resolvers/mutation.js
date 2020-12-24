@@ -1,5 +1,6 @@
 
-const { signJwt, comparePassword, hashPassword } = require("../../utils")
+
+const { signJwt, comparePassword, hashPassword, requestGithubUser } = require("../../utils")
 
 const mutation = {
  
@@ -177,6 +178,28 @@ const mutation = {
         }
 
         return response;
+    },
+
+    authorizeWithGithub: async (root, args, context) => {
+        const code = args.code;
+        console.log("code", code, process.env.GITHUB_CLIENT_ID)
+        const githubUser = await requestGithubUser({
+            client_id: process.env.GITHUB_CLIENT_ID,
+            client_secret: process.env.GITHUB_CLIENT_SECRET,
+            code
+        })
+        console.log("USER", githubUser)
+        let currentUser = {
+            githubId: githubUser.id,
+            username: githubUser.login,
+            avatarUrl: githubUser.avatar_url,
+            projects: []
+        }
+
+        return {
+            user: currentUser, githubToken: githubUser.access_token
+        }
+       
     }
 }
 

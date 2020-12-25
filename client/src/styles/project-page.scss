@@ -1,8 +1,15 @@
 @import './base.scss';
 
-.box {
+.project-page__box {
+    margin: 20px 0;
     .title {
         text-align: center;
+    }
+    
+    .paginator {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
     }
 }
 

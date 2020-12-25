@@ -23,13 +23,13 @@ function Header() {
         </div>
 
         <div class="navbar-end">
-          <Link to="/auth" class="navbar-item">
+          <Link to="/auth/signin" class="navbar-item">
             <p class="nav-item__link">Login</p>
           </Link>
-          <Link to="/auth" class="navbar-item">
+          <Link to="/auth/signup" class="navbar-item">
             <p class="nav-item__link">Register</p>
           </Link>
-          <Link to="/auth" class="navbar-item">
+          <Link to="/auth/signout" class="navbar-item">
             <p class="nav-item__link">Logout</p>
           </Link>
        

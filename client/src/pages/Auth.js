@@ -1,8 +1,14 @@
+import { useEffect } from 'react'
 
+import '../styles/auth.scss'
+function Auth(props) {
+    const handle  = props.match.params.type
 
-function Auth() {
+    
     return (
-        <h1>Sign in</h1>
+        <div class="box auth-box">
+       
+        </div>
     )
 }
 

@@ -12,9 +12,14 @@ function App() {
         <Header/>
           <Switch>
             <Route exact path="/" component={ProjectsPage}/>
-            <Route path="/auth" component={Auth}/>
+            <Route path="/auth/:type" component={Auth}/>
             <Route component={Error} />
-
+            {/* <Route
+              path='/dashboard'
+              render={(props) => (
+                <Dashboard {...props} isAuthed={true} />
+              )}
+            /> */}
           </Switch>
 
       </div>

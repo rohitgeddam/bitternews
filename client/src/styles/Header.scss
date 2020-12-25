@@ -4,6 +4,8 @@
     margin: 2em 0;
     display: flex;
     align-items: baseline;
+    justify-content: flex-start;
+    align-content: space-between;
     .navbar-heading {
         font-size: 32px;
 
@@ -11,6 +13,12 @@
             color: $yellow;
         }
 
+    }
+    .navbar-end{
+        display: flex;
+        margin-right: 0;
+        margin-left: auto;
+        // align-self: flex-end;
     }
 
 
@@ -39,8 +47,14 @@
     .navbar {
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        // align-items: center;
+            .navbar-end {
+                display: flex;
+                flex-direction: column;
+                align-self: flex-start;
+                margin: 0;
 
+            }
             .navbar-item {
                 font-size: 18px;
                 color: $white;

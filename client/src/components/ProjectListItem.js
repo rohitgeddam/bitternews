@@ -7,15 +7,24 @@ function ProjectListItem(props) {
   <article class="media">
     <div class="media-left upvote-container">
      <button class="upvote-container__button"><img src={caret} width="16px"/></button>
-     <small>{props.voteCount}</small>
+     {/* <small>{props.voteCount}</small> */}
     </div>
     <div class="media-content">
       <div class="content">
-        <p>
-          <strong>{props.title}</strong> <small>@{props.postedBy}</small>
-          <br/>
+          <div class="project-list-item__header">
+            <div class="project-list-item__title-postedby"> 
+              <strong class="project-list-item__title">{props.title}</strong> 
+              <small class="project-list-item__postedby">@{props.postedBy}</small> 
+            </div>
+            <small class="project-list-item__postedon">{props.postedOn}</small>
+          </div>
+
+          
+          <div class="project-list-item__description">
             {props.description}
-        </p>
+
+          </div>
+          
       </div>
       <nav class="level is-mobile">
         <div class="level-left">

@@ -1,4 +1,31 @@
+import { useQuery, gql } from '@apollo/client';
+import { useState } from 'react'
+
 import ProjectListItem from './ProjectListItem'
+
+const GET_ALL_PROJECTS = gql`
+  query GetAllProjects {
+    allProjects(page: 1, limit: 2) {
+        docs {
+      title
+      description
+      postedOn
+     
+            }
+        totalDocs
+        limit
+        totalPages
+        page
+        pagingCounter
+        hasPrevPage
+        hasNextPage
+        prevPage
+        nextPage
+  
+        }
+    }
+`;
+
 
 const projectList = [
     {
@@ -36,16 +63,31 @@ const projectList = [
 ]
 
 function ProjectList() {
+ 
+    const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+
+
+
     return (
   
         <div>
-            { projectList.map( item =>
+            { data.allProjects.docs.map( (item, i) =>
             <ProjectListItem 
+            key={i}
             title={item.title}
             description={item.description}
-            postedBy={item.postedBy}
-            voteCount={item.voteCount }/> )}
+            postedOn={item.postedOn}
+            postedBy={"rohitgeddam"}
+            // voteCount={item.voteCount }
+
+            /> )
             
+            }
+            
+
             
         </div>
   

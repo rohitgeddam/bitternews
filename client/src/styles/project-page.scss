@@ -13,6 +13,42 @@
         transform: scale(1.1);
     }
 
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 0;
+        p {
+            width: 100%;
+        }
+        .project-list-item__title {
+            font-size: 24px;
+        }
+        .project-list-item__postedby {
+            font-size: 18px;
+        
+        }
+        .project-list-item__header {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0;
+            // .project-list-item__title-postedby {
+            //     display: flex;
+            // }
+        }
+       
+        .project-list-item__postedon {
+            align-self: flex-end;
+        }
+
+        .project-list-item__description {
+            font-size: 18px;
+            margin: 0;
+        }
+    }
+
 }
 
 

@@ -14,7 +14,6 @@
     }
 
 
-        .navbar-start {
 
             .navbar-item {
                 font-size: 18px;
@@ -30,7 +29,6 @@
             }
     
     
-        }
 
 
 
@@ -40,8 +38,8 @@
 @media only screen and (max-width: 768px) {
     .navbar {
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        .navbar-start {
 
             .navbar-item {
                 font-size: 18px;
@@ -58,5 +56,4 @@
     
     
         }
-    }
 }

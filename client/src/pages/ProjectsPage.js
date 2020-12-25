@@ -84,7 +84,7 @@ function ProjectsPage() {
           <h1 class="title">Projects</h1>
 
             <div class="select">
-              <select onChange={sortOptionChange}>
+              <select onChange={sortOptionChange} selected={sortOptions.sortBy} value={sortOptions.sortBy}>
                 <option value={SORTBY[1]}>Popular</option>
                 <option value={SORTBY[2]}>Oldest</option>
                 <option value={SORTBY[3]}>Latest</option>

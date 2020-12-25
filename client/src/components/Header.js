@@ -20,6 +20,20 @@ function Header() {
           </a>  */}
         </div>
 
+        <div class="navbar-end">
+        <a class="navbar-item" href="#">
+            <p class="nav-item__link">Login</p>
+          </a> 
+
+          <a class="navbar-item" href="#">
+            <p class="nav-item__link">Register</p>
+          </a> 
+
+          <a class="navbar-item" href="#">
+            <p class="nav-item__link">Logout</p>
+          </a> 
+          
+        </div>
 
 
 

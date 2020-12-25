@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Error from "./pages/Error"
 import Header from "./components/Header";
 
-import Auth from './pages/Auth'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import ProjectsPage from './pages/ProjectsPage'
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <Header/>
           <Switch>
             <Route exact path="/" component={ProjectsPage}/>
-            <Route path="/auth/:type" component={Auth}/>
+            <Route path="/auth/signin" component={LoginPage}/>
+            <Route path="/auth/signup" component={RegisterPage}/>
             <Route component={Error} />
             {/* <Route
               path='/dashboard'

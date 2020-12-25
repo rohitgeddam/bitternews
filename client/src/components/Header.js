@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
-
+import {AUTH_TOKEN} from '../constants'
 import '../styles/Header.scss'
 function Header() {
+
+    const logoutUser = (e) => {
+      localStorage.clear(AUTH_TOKEN)
+    }
     return (
   
     <nav class="navbar is-transparent is-spaced is-dark is-mobile">
@@ -29,7 +33,7 @@ function Header() {
           <Link to="/auth/signup" class="navbar-item">
             <p class="nav-item__link">Register</p>
           </Link>
-          <Link to="/auth/signout" class="navbar-item">
+          <Link to="#" class="navbar-item" onClick={logoutUser}>
             <p class="nav-item__link">Logout</p>
           </Link>
        

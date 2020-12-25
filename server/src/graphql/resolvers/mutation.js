@@ -111,49 +111,91 @@ const mutation = {
         
     },
 
-    vote: async (root, args, context) => {
+    // vote: async (root, args, context) => {
 
-        const voterId = context.userId;
-        const votedForId = args.votedFor;
+    //     const voterId = context.userId;
+    //     const votedForId = args.votedFor;
 
-        // check if already voted
+    //     // check if already voted
+    //     const response = {
+    //         status: "Failure",
+    //         message: "",
+    //         data: null
+    //     }
+
+    //     const previousVote = await context.db.Vote.findOne({voter: voterId, votedFor: votedForId}).exec();
+    //     console.log("PREV", previousVote)
+    //     if(!previousVote){
+    //         let newVote = context.db.Vote({
+    //             voter: voterId,
+    //             votedFor: votedForId,
+    //         })
+    //         try {
+    //             await newVote.save();
+    //         } catch(err) {
+    //             return {
+    //                 status: "Failure",
+    //                 message: "Failed to record vote",
+    //                 data: null
+    //             } 
+    //         }
+
+    //         response.status = "Success";
+    //         response.message = "Voted Successfully";
+    //         response.data = newVote;
+            
+    //     } else {
+    //         response.message = "Already Voted";
+    //         response.data = previousVote;
+           
+    //     }
+
+    //     return response;
+        
+    // },
+
+    voteProject: async (root, args, context) => {
         const response = {
             status: "Failure",
             message: "",
             data: null
         }
+        const userId = context.userId;
+        const projectId = args.projectId;
 
-        const previousVote = await context.db.Vote.findOne({voter: voterId, votedFor: votedForId}).exec();
-        console.log("PREV", previousVote)
-        if(!previousVote){
-            let newVote = context.db.Vote({
-                voter: voterId,
-                votedFor: votedForId,
+        // TODO if user id null return error
+
+        // find the project
+        const project = await context.db.Project.findOne({_id: projectId}).exec()
+
+        // check if vote already exists
+        const previousVote = await context.db.Vote.findOne({voter: userId, votedFor: projectId}).exec();
+
+        // create a new vote
+        if (!previousVote) {
+            const newVote = new context.db.Vote({
+                voter: userId,
+                votedFor: projectId
             })
             try {
-                await newVote.save();
-            } catch(err) {
-                return {
-                    status: "Failure",
-                    message: "Failed to record vote",
-                    data: null
-                } 
+                newVote.save()
+                project.votes.push(newVote);
+                project.voteCount = project.voteCount + 1;
+                project.save();
+                response.status = "Success";
+                response.message = "Vote Recorded",
+                response.data = newVote;
+            } catch (err) {
+                console.log(err)
             }
-
-            response.status = "Success";
-            response.message = "Voted Successfully";
-            response.data = newVote;
-            
         } else {
-            response.message = "Already Voted";
+            response.message = "Vote already exists";
             response.data = previousVote;
-           
         }
 
+        //
         return response;
-        
     },
-
     addConfession: async (root, args, context) => {
 
         const response = {
@@ -180,6 +222,7 @@ const mutation = {
         return response;
     },
 
+    // TODO implement github profile
     authorizeWithGithub: async (root, args, context) => {
         const code = args.code;
         console.log("code", code, process.env.GITHUB_CLIENT_ID)
@@ -188,6 +231,7 @@ const mutation = {
             client_secret: process.env.GITHUB_CLIENT_SECRET,
             code
         })
+
         console.log("USER", githubUser)
         let currentUser = {
             githubId: githubUser.id,

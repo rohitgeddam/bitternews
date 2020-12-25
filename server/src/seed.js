@@ -12,63 +12,73 @@ mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 console.log("connected"); 
 const db = mongoose.connection;
 
-const users = [
-    {
-        email: "rohitgeddam2018@gmail.com",
-        username: "rohitgeddam",
-        password: "xyz"
-    },
-    {
-        email: "rohitgeddam2019@gmail.com",
-        username: "rohitgeddam2019",
-        password: "xyz"
-    },{
-        email: "rohitgeddam2020@gmail.com",
-        username: "rohitgeddam2020",
-        password: "xyz"
-    }
-]
+// const users = [
+//     {
+//         email: "rohitgeddam2018@gmail.com",
+//         username: "rohitgeddam",
+//         password: "xyz"
+//     },
+//     {
+//         email: "rohitgeddam2019@gmail.com",
+//         username: "rohitgeddam2019",
+//         password: "xyz"
+//     },{
+//         email: "rohitgeddam2020@gmail.com",
+//         username: "rohitgeddam2020",
+//         password: "xyz"
+//     }
+// ]
+
+const user = new mongooseModels.User({
+    email: "rohitgeddam2018@gmail.com",
+    username: "rohitgeddam",
+    password: "xyz",
+})
+user.save(function(err) {
+    if(err) console.log(err);
+    else console.log("user saved")
+})
 
 
 const projects = [
     {
         title: "clone uber eats",
         description: "cloning uber eats with react",
-        postedBy: users[0]
+        postedBy: user
     },
     {
         title: "clone ebay eats",
         description: "cloning uber eats with react",
-        postedBy: users[1]
+        postedBy: user
     },
     {
         title: "clone safari eats",
         description: "cloning uber eats with react",
-        postedBy: users[2]
+        postedBy: user
     },
     {
         title: "clone nuber eats",
         description: "cloning uber eats with react",
-        postedBy: users[0]
+        postedBy: user
     },
 ]
 
 const confessions = [
     {
         message: "i am very lucky",
-        postedBy: users[0]
+        postedBy: user
     },
     {
         message: "i am very happy",
-        postedBy: users[1]
+        postedBy: user
     },
     {
         message: "i am very spirited",
-        postedBy: users[2]
+        postedBy: user
     },
     {
         message: "i am super lucky",
-        postedBy: users[0]
+        postedBy: user
     },
 ]
 
@@ -79,11 +89,8 @@ const confessions = [
 // mongooseModels.Confession.deleteMany({})
 // mongooseModels.Vote.deleteMany({})
 // write on db.
-mongooseModels.User.create(users, function(err){
-    if(err){
-        console.log(err)
-    }
-})
+
+
 
 mongooseModels.Project.create(projects, function(err){
     if(err){
@@ -96,3 +103,23 @@ mongooseModels.Confession.create(confessions, function(err){
         console.log(err)
     }
 })
+
+
+
+
+// const votes = [
+//     {
+//         voter: "5fe56e786617bd44106c9cfb",
+//         votedFor: "5fe56e786617bd44106c9cfe",
+//     },
+//     {
+//         voter: "5fe56e786617bd44106c9cfb",
+//         votedFor: "5fe56e786617bd44106c9cfe",
+//     }
+// ]
+
+// mongooseModels.Vote.create(votes, function(err){
+//     if(err) {
+//         console.log(err)
+//     }
+// })

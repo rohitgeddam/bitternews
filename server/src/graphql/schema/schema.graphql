@@ -6,6 +6,7 @@ type Project {
   postedBy: User!
   postedOn: Date!
   votes: [Vote!]!
+  voteCount: Int!
 }
 
 type Vote {
@@ -21,10 +22,9 @@ type User {
 }
 
 type GithubUser {
-  id: ID!
   githubId: String!
   username: String!
-  avatarUrl: String!
+  avatarUrl: String
   projects: [Project!]!
 }
 
@@ -95,9 +95,9 @@ type AuthPayload {
 
 
 type Query {
-  allProjects(page: Int, limit: Int): ProjectPaginationResult!
+  allProjects(page: Int, limit: Int, sortBy: SortBy = POPULARITY): ProjectPaginationResult!
   # allConfessions: [Confession!]!
-  allConfessions(page: Int, limit: Int): ConfessionPaginationResult!
+  allConfessions(page: Int, limit: Int, sortBy: SortBy = POPULARITY): ConfessionPaginationResult!
   allUsers: [User!]!
   githubLoginUrl: String!
 }
@@ -106,7 +106,7 @@ type Mutation {
   addProject(title: String!, description: String!): AddProjectResponse!
   signIn(email: String!, password: String!): AuthResponse!
   signUp(email: String!, password: String!, username: String!): AuthResponse!
-  vote(votedFor: ID!): VotingResponse
+  voteProject(projectId: ID!): VotingResponse
   addConfession(message: String!):  ConfessionResponse!
   authorizeWithGithub(code: String!): AuthPayload! 
 }
@@ -140,6 +140,12 @@ type AuthResponse implements MutationResponse {
 type AddProjectResponse implements MutationResponse {
   status: String!
   data: Project
+}
+
+enum SortBy{
+  POPULARITY
+  LATEST
+  OLDEST
 }
 
 scalar Date

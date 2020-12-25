@@ -9,7 +9,15 @@ const project = {
    votes: async (root, args, context) => {
     const projectId = root.id;
     return await context.db.Vote.find({votedFor: projectId}).exec()
-   }
+   },
+
+//    voteCount: async (root, args, context) => {
+//     const projectId = root.id;
+//     const votes = await context.db.Vote.find({votedFor: projectId}).exec()
+//     return votes.length;
+//    }, 
+
+   
 }
 
 module.exports = project

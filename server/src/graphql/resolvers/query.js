@@ -2,7 +2,17 @@
 
 const query = {
     allProjects: async (root, args, context) => {
+
+        let sort = {}
+        if (args.sortBy === "POPULARITY") {
+            sort = {voteCount: -1}
+        } else if (args.sortBy === "LATEST") {
+            sort = {postedOn: -1}
+        } else {
+            sort = {postedOn: 1}
+        }
         options = {
+            sort: sort,
             page: args.page || 1,
             limit: args.limit || 2
         }
@@ -13,6 +23,13 @@ const query = {
         } catch(err){
             console.log(err);
         }
+        // try {
+        //     const result = await context.db.Project.find().sort('voteCount').limit(options.limit).exec()
+        //     console.log("RES", result)
+        //     return result
+        // } catch(err) {
+        //     console.log(err)
+        // }
     },
 
     allUsers: async (root, args, context) => {

@@ -14,9 +14,17 @@ const ProjectSchema = new mongoose.Schema({
     //     ref: 'User'
     // }
     postedBy: Object,
-    votes: ['Vote']
+    votes: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Vote',
+    }],
+    voteCount: { type: Number, default: 0},
 
 })
+
+
+
+
 
 const ConfessionSchema = new mongoose.Schema({
     message: {type: String, trim: true},

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useHistory } from 'react-router';
 
+import UserContext from '../UserContext'
 import {AUTH_TOKEN} from '../constants'
 import '../styles/auth.scss'
 
@@ -13,6 +14,7 @@ const LOGIN_MUTATION = gql`
             data {
                 token
                 user {
+                    id
                     email
                     username
                 }
@@ -25,6 +27,8 @@ const LOGIN_MUTATION = gql`
 `
 
 function Login() {
+    const { user, setUser } = useContext(UserContext);
+
     const history = useHistory();
 
     const [details, setDetails] = useState({
@@ -50,6 +54,11 @@ function Login() {
             const loginData = signIn.data;
             console.log("SIGNIN", loginData)
             localStorage.setItem(AUTH_TOKEN, loginData.token);
+            setUser({
+                userId: loginData.user.id,
+                email: loginData.user.email,
+                username: loginData.user.username
+            })
             history.push('/')
 
         }
@@ -84,6 +93,7 @@ function Login() {
 
     return (
         <div class="box auth-box">
+            <pre>{JSON.stringify(user)}</pre>
                 <div class="auth-box__email">
                     <label for="auth-box__email">Email</label>
                     <input

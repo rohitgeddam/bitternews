@@ -1,9 +1,14 @@
+import {useContext} from 'react'
 import { Link } from 'react-router-dom'
+import UserContext from '../UserContext'
+
 import {AUTH_TOKEN} from '../constants'
 import '../styles/Header.scss'
 function Header() {
+    const { user, setUser } = useContext(UserContext);
 
     const logoutUser = (e) => {
+      setUser(null)
       localStorage.clear(AUTH_TOKEN)
     }
     return (
@@ -27,15 +32,24 @@ function Header() {
         </div>
 
         <div class="navbar-end">
-          <Link to="/auth/signin" class="navbar-item">
-            <p class="nav-item__link">Login</p>
-          </Link>
-          <Link to="/auth/signup" class="navbar-item">
-            <p class="nav-item__link">Register</p>
-          </Link>
-          <Link to="#" class="navbar-item" onClick={logoutUser}>
-            <p class="nav-item__link">Logout</p>
-          </Link>
+
+         { !user &&
+            <>
+              <Link to="/auth/signin" class="navbar-item">
+                <p class="nav-item__link">Login</p>
+              </Link>
+              <Link to="/auth/signup" class="navbar-item">
+                <p class="nav-item__link">Register</p>
+              </Link>
+            </>
+         }
+
+          {
+            user &&
+            <Link to="#" class="navbar-item" onClick={logoutUser}>
+              <p class="nav-item__link">Logout</p>
+            </Link>
+          }
        
           
         </div>

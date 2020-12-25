@@ -7,7 +7,7 @@ function ProjectListItem(props) {
   <article class="media">
     <div class="media-left upvote-container">
      <button class="upvote-container__button"><img src={caret} width="16px"/></button>
-     {/* <small>{props.voteCount}</small> */}
+     <small>{props.voteCount}</small>
     </div>
     <div class="media-content">
       <div class="content">

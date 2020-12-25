@@ -5,13 +5,13 @@ import ProjectListItem from './ProjectListItem'
 
 const GET_ALL_PROJECTS = gql`
   query GetAllProjects {
-    allProjects(page: 1, limit: 2) {
+    allProjects(page: 1, limit: 2, sortBy: POPULARITY) {
         docs {
-      title
-      description
-      postedOn
-     
-            }
+            title
+            description
+            postedOn
+            voteCount
+        }
         totalDocs
         limit
         totalPages
@@ -81,7 +81,7 @@ function ProjectList() {
             description={item.description}
             postedOn={item.postedOn}
             postedBy={"rohitgeddam"}
-            // voteCount={item.voteCount }
+            voteCount={item.voteCount }
 
             /> )
             

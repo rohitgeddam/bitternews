@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import '../styles/Header.scss'
 function Header() {
     return (
@@ -12,26 +14,25 @@ function Header() {
 
 
         <div class="navbar-start">
-          <a class="navbar-item" href="#">
+          {/* <a class="navbar-item" href="#">
+          </a> */}
+
+          <Link to="/" class="navbar-item">
             <p class="nav-item__link">Projects</p>
-          </a>
-          {/* <a class="navbar-item" href="https://bulma.io/">
-            Confessions
-          </a>  */}
+          </Link>
         </div>
 
         <div class="navbar-end">
-        <a class="navbar-item" href="#">
+          <Link to="/auth" class="navbar-item">
             <p class="nav-item__link">Login</p>
-          </a> 
-
-          <a class="navbar-item" href="#">
+          </Link>
+          <Link to="/auth" class="navbar-item">
             <p class="nav-item__link">Register</p>
-          </a> 
-
-          <a class="navbar-item" href="#">
+          </Link>
+          <Link to="/auth" class="navbar-item">
             <p class="nav-item__link">Logout</p>
-          </a> 
+          </Link>
+       
           
         </div>
 

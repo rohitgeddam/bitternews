@@ -45,9 +45,9 @@ function ProjectsPage() {
   });
 
 
-  useEffect( () => {
-    console.log(data);
-  })
+  // useEffect( () => {
+  //   console.log(data);
+  // })
 
 
   if (loading) return <p>Loading...</p>;
@@ -71,7 +71,7 @@ function ProjectsPage() {
 
   const sortOptionChange = (e) => {
     console.log("CHANGES", e.target.value)
-    setSortOptions({sortBy: e.target.value})
+    setSortOptions({...sortOptions, sortBy: e.target.value})
     console.log(sortOptions)
 
   }

@@ -8,10 +8,7 @@ import ProjectListItem from './ProjectListItem'
 
 function ProjectList({projectList}) {
  
-    
-    useEffect( () => {
-        console.log("PROJECT LIST:", projectList);
-    })
+   
 
     return (
   

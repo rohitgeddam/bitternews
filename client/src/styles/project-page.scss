@@ -2,9 +2,26 @@
 
 .project-page__box {
     margin: 20px 0;
-    .title {
-        text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    .project-page__header {
+        
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .title {
+            text-align: center;
+            align-self: center;
+        }
+        .select{
+            align-self: center;
+        }
     }
+
+   
     
     .paginator {
         display: flex;

@@ -68,12 +68,31 @@ function ProjectsPage() {
     })
     console.log(sortOptions)
   }
+
+  const sortOptionChange = (e) => {
+    console.log("CHANGES", e.target.value)
+    setSortOptions({sortBy: e.target.value})
+    console.log(sortOptions)
+
+  }
  
   return (
 
       <div class="box project-page__box">
-        <h1 class="title">Projects</h1>
 
+        <div class="project-page__header">
+          <h1 class="title">Projects</h1>
+
+            <div class="select">
+              <select onChange={sortOptionChange}>
+                <option value={SORTBY[1]}>Popular</option>
+                <option value={SORTBY[2]}>Oldest</option>
+                <option value={SORTBY[3]}>Latest</option>
+              </select>
+
+          </div>
+        </div>
+        
 
         {/* <h2 class="subtitle">Subtitle</h2> */}
         { data && 

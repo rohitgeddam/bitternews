@@ -34,7 +34,7 @@
     transition: all .2s ease-in-out;
     cursor: pointer;
     &:hover {
-        transform: scale(1.1);
+        transform: scaleX(1.1);
     }
 
     .content {
@@ -85,6 +85,7 @@
         border: none;
         cursor: pointer;
         transition: all .2s ease-in-out;
+        outline: none;
 
     &:hover{
         transform: scale(1.5);

@@ -46,9 +46,14 @@ function Header() {
 
           {
             user &&
+            <>
+           <Link to="#" class="navbar-item">
+              <p class="nav-item__link">{user.username}</p>
+            </Link> 
             <Link to="#" class="navbar-item" onClick={logoutUser}>
               <p class="nav-item__link">Logout</p>
             </Link>
+            </>
           }
        
           

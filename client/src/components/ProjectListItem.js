@@ -1,12 +1,26 @@
+import { useState } from 'react';
+
+
 import caret from '../assets/images/bleach.png'; // Tell webpack this JS file uses this image
 
+
+
+
+
 function ProjectListItem(props) {
+  
+
+
+
+  
+
+ 
     return (
   
   <div class="box project-list-item__box">
   <article class="media">
     <div class="media-left upvote-container">
-     <button class="upvote-container__button"><img src={caret} width="16px"/></button>
+     <button  onClick={()=> props.upVote(props.projectId) } class="upvote-container__button"><img src={caret} width="16px"/></button>
      <small>{props.voteCount}</small>
     </div>
     <div class="media-content">
@@ -24,6 +38,8 @@ function ProjectListItem(props) {
             {props.description}
 
           </div>
+
+          
           
       </div>
       <nav class="level is-mobile">

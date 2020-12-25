@@ -11,6 +11,7 @@ const GET_ALL_PROJECTS = gql`
   query GetAllProjects($page: Int, $limit: Int, $sortBy: SortBy ) {
     allProjects(page: $page, limit: $limit, sortBy: $sortBy) {
         docs {
+            id
             title
             description
             postedOn
@@ -97,7 +98,7 @@ function ProjectsPage() {
         {/* <h2 class="subtitle">Subtitle</h2> */}
         { data && 
         <>
-          <ProjectList projectList={data.allProjects.docs} />
+          <ProjectList projectList={data.allProjects.docs} refetchList={refetch} />
           <Paginator paginatorDetails={ {
             hasNextPage: data.allProjects.hasNextPage,
             hasPrevPage: data.allProjects.hasPrevPage,

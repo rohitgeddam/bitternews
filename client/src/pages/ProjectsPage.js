@@ -56,7 +56,7 @@ function ProjectsPage() {
   const getNextPage = () => {
     console.log("NEXT")
     setSortOptions( state => {
-      return {page: state.page + 1}
+      return {...sortOptions, page: state.page + 1}
     })
     console.log(sortOptions)
   }
@@ -64,7 +64,7 @@ function ProjectsPage() {
   const getPrevPage = () => {
     console.log("PREV")
     setSortOptions( state => {
-      return {page: state.page - 1}
+      return {...sortOptions, page: state.page - 1}
     })
     console.log(sortOptions)
   }

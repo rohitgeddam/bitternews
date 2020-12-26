@@ -1,4 +1,12 @@
 @import './base.scss';
+.auth-box__error{
+    background-color: $black;
+    transition: width 2s, height 4s;
+    transition-timing-function: ease;
+    text-align: center;
+    color: $white;
+    font-size: large;
+}
 
 .auth-box {
     margin: auto;

@@ -1,5 +1,12 @@
 @import './base.scss';
-
+.project-list-item__error {
+    background-color: $black;
+    transition: width 2s, height 4s;
+    transition-timing-function: ease;
+    text-align: center;
+    color: $white;
+    font-size: large;
+}
 .project-page__box {
     margin: 20px 0;
     display: flex;

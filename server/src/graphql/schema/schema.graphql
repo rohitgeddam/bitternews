@@ -99,6 +99,7 @@ type Query {
   # allConfessions: [Confession!]!
   allConfessions(page: Int, limit: Int, sortBy: SortBy = POPULARITY): ConfessionPaginationResult!
   allUsers: [User!]!
+  me: MeResponse! 
   githubLoginUrl: String!
 }
 
@@ -114,6 +115,13 @@ type Mutation {
 interface MutationResponse {
   status: String!
 }
+
+type MeResponse implements MutationResponse {
+  status: String!
+  message: String!
+  data: User
+}
+
 
 type ConfessionResponse implements MutationResponse {
   status: String!

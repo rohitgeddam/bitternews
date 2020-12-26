@@ -1,6 +1,29 @@
 
 
 const query = {
+    me: async (root, args, context ) => {
+        const userId = context.userId;
+        const response = {
+            status: "Failure",
+            message: '',
+            data: null,
+        }
+        if (userId) {
+            // find the user and return
+            const user = await context.db.User.findOne({_id: userId}).exec()
+            console.log(user)
+            response.status = "Success"
+            response.message = "User Found"
+            response.data = user;
+
+        } else {
+            response.message = "Token can't be verified"
+        }
+
+        return response;
+
+    },
+
     allProjects: async (root, args, context) => {
 
         let sort = {}

@@ -162,7 +162,7 @@ const mutation = {
         }
         const userId = context.userId;
         const projectId = args.projectId;
-
+        console.log("USERID", userId, projectId, )
         // TODO if user id null return error
 
         // find the project

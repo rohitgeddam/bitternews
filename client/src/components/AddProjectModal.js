@@ -35,7 +35,7 @@ const ADD_PROJECT_MUTATION = gql`
 
 Modal.setAppElement('#root')
  
-function AddProjectModal({isOpen, afterOpenModal, closeModal}){
+function AddProjectModal({isOpen, afterOpenModal, closeModal, refetch}){
     const [details, setDetails] = useState({
         title: '',
         description: '',
@@ -56,6 +56,7 @@ function AddProjectModal({isOpen, afterOpenModal, closeModal}){
                 setError({isError: true, message: "Failed to add project"})
             } else {
                 closeModal();
+                refetch();
             }
         }
     })
@@ -71,7 +72,18 @@ function AddProjectModal({isOpen, afterOpenModal, closeModal}){
 
     const checkDetails = () => {
         if (details.title.trim() === "" || details.description.trim() === ""){
+            setError({isError:true, message: "Fill the details correctly"})
+
          return false;
+        }
+        if (details.title.trim().length >= 100) {
+            setError({isError: true, message: "title length > 100"})
+            return false
+        }
+
+        if (details.description.trim().length >= 400) {
+            setError({isError: true, message: "description length > 400"})
+            return false
         }
         return true;
     }
@@ -88,8 +100,6 @@ function AddProjectModal({isOpen, afterOpenModal, closeModal}){
             } catch (err) {
                 console.log(err)
             }
-        } else {
-            setError({isError:true, message: "Fill the details correctly"})
         }
     }
 
@@ -131,7 +141,7 @@ function AddProjectModal({isOpen, afterOpenModal, closeModal}){
                 </div>
 
                 <div class="add-project-box__content__description">
-                <label for="add-project-box__content__description">Description <small>Max Characters - 150</small></label>
+                <label for="add-project-box__content__description">Description <small>Max Characters - 400</small></label>
 
                     <textarea id="add-project-box__content__description"
                     class="add-project-box__content__description"

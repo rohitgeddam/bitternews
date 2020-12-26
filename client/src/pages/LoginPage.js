@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useHistory } from 'react-router';
-
+import { validate } from 'email-validator'
 import UserContext from '../UserContext'
 import {AUTH_TOKEN} from '../constants'
 import '../styles/auth.scss'
@@ -65,6 +65,20 @@ function Login() {
     }
    });
 
+   const checkDetails = () => {
+       if(details.email.trim() === '' || details.password.trim() === '') {
+           setError({isError:true, message: 'invalid input'})
+           return false;
+       } 
+       if (!validate(details.email)) {
+           setError({isError:true, message: 'invalid email address'})
+           return false;
+            
+       }
+       return true;
+
+   }
+
    
 
 
@@ -78,8 +92,9 @@ function Login() {
 
     const handleSubmit =  (e) => {
         e.preventDefault();
-        console.log("submit")
-        signInUser()
+        if (checkDetails() ){
+            signInUser()
+        }
         
     }
 

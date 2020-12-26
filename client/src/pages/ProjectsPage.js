@@ -45,7 +45,7 @@ const SORTBY = {
 
 function ProjectsPage() {
   const { user, setUser } = useContext(UserContext);
-  const [sortOptions, setSortOptions] = useState({page: 1, limit: 2, sortBy: SORTBY[1]})
+  const [sortOptions, setSortOptions] = useState({page: 1, limit: 10, sortBy: SORTBY[1]})
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_PROJECTS, {
@@ -53,16 +53,14 @@ function ProjectsPage() {
   });
 
 
-  useEffect( () => {
-    console.log(data);
-  })
+
 
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   const getNextPage = () => {
-    console.log("NEXT")
+
     setSortOptions( state => {
       return {...sortOptions, page: state.page + 1}
     })
@@ -70,7 +68,7 @@ function ProjectsPage() {
   }
 
   const getPrevPage = () => {
-    console.log("PREV")
+
     setSortOptions( state => {
       return {...sortOptions, page: state.page - 1}
     })
@@ -78,7 +76,7 @@ function ProjectsPage() {
   }
 
   const sortOptionChange = (e) => {
-    console.log("CHANGES", e.target.value)
+
     setSortOptions({...sortOptions, sortBy: e.target.value})
     console.log(sortOptions)
 
@@ -106,6 +104,7 @@ function ProjectsPage() {
           isOpen={modalIsOpen}
           afterOpenModal={afterOpenModal}
           closeModal={closeModal}
+          refetch={refetch}
         />
         <div class="project-page__header">
           <h1 class="title">Projects

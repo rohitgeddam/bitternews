@@ -21,10 +21,15 @@ const VOTE_PROJECT_MUTATION = gql`
 
 `
 
+
+
 function ProjectList({projectList, refetchList }) {
  
     const { user, setUser } = useContext(UserContext);
     const [error, setError] = useState({isError: false, message: ''});
+    const clearErrors = (e) => {
+      setError({isError:false, message:''})
+    }
     const [upVoteProject, { loading, data }] = useMutation(VOTE_PROJECT_MUTATION,{
        
         onCompleted: ({voteProject}) => {
@@ -80,7 +85,7 @@ function ProjectList({projectList, refetchList }) {
   
         <div>
             <div class="project-list-item__error">
-            { error.isError && <><p>{error.message}</p> </>}
+            { error.isError && <><p onClick={clearErrors}>{error.message}</p> </>}
             </div>
             { projectList && projectList.map( (item, i) =>
             <ProjectListItem 

@@ -12,6 +12,8 @@
     display: flex;
     flex-direction: column;
 
+    
+
     .project-page__header {
         
 
@@ -25,6 +27,13 @@
         }
         .select{
             align-self: center;
+        }
+
+        .project-page__header__addbtn {
+            cursor: pointer;
+            margin: 0 20px;
+            color: $black;
+
         }
     }
 

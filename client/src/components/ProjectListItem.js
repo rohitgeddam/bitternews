@@ -28,7 +28,7 @@ function ProjectListItem(props) {
           <div class="project-list-item__header">
             <div class="project-list-item__title-postedby"> 
               <strong class="project-list-item__title">{props.title}</strong> 
-              <small class="project-list-item__postedby">@{props.postedBy}</small> 
+              <small class="project-list-item__postedby"> @ {props.postedBy}</small> 
             </div>
             <small class="project-list-item__postedon">{props.postedOn}</small>
           </div>

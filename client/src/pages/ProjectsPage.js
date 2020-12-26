@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useQuery, gql } from '@apollo/client';
 
 import ProjectList from '../components/ProjectList'
 import Paginator from '../components/Paginator'
+import AddProjectModal from '../components/AddProjectModal'
+import UserContext from '../UserContext'
 import '../styles/project-page.scss'
 
 
@@ -16,6 +18,9 @@ const GET_ALL_PROJECTS = gql`
             description
             postedOn
             voteCount
+            postedBy {
+              username
+            }
         }
         totalDocs
         limit
@@ -39,16 +44,18 @@ const SORTBY = {
 }
 
 function ProjectsPage() {
+  const { user, setUser } = useContext(UserContext);
   const [sortOptions, setSortOptions] = useState({page: 1, limit: 2, sortBy: SORTBY[1]})
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_PROJECTS, {
     variables: sortOptions
   });
 
 
-  // useEffect( () => {
-  //   console.log(data);
-  // })
+  useEffect( () => {
+    console.log(data);
+  })
 
 
   if (loading) return <p>Loading...</p>;
@@ -76,13 +83,43 @@ function ProjectsPage() {
     console.log(sortOptions)
 
   }
+
+
+  function openModal() {
+    setIsOpen(true);
+  }
+ 
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    console.log("I am open now")
+  }
+ 
+  function closeModal(){
+    setIsOpen(false);
+  }
+
  
   return (
 
       <div class="box project-page__box">
-
+        <AddProjectModal
+          isOpen={modalIsOpen}
+          afterOpenModal={afterOpenModal}
+          closeModal={closeModal}
+        />
         <div class="project-page__header">
-          <h1 class="title">Projects</h1>
+          <h1 class="title">Projects
+          {
+            user &&
+            <span
+            class="project-page__header__addbtn"
+            onClick={openModal}
+           >
+             +
+           </span>
+          }
+         
+          </h1>
 
             <div class="select">
               <select onChange={sortOptionChange} selected={sortOptions.sortBy} value={sortOptions.sortBy}>

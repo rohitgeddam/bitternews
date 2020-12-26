@@ -28,7 +28,7 @@ const REGISTER_MUTATION = gql`
 
 function Register() {
     const { user, setUser } = useContext(UserContext);
-
+   
     const history = useHistory();
 
     const [details, setDetails] = useState({
@@ -67,6 +67,14 @@ function Register() {
     }
    });
 
+
+   const checkDetails = () => {
+       if (details.username.trim() === "" || details.email.trim() === "" || details.password.trim() === ""){
+        return false;
+       }
+       return true;
+   }
+
    
 
 
@@ -84,8 +92,11 @@ function Register() {
 
     const handleSubmit =  (e) => {
         e.preventDefault();
-        console.log("submit")
-        signUpUser()
+        if (checkDetails()){
+            signUpUser()
+        } else {
+            setError({isError:true, message: "Please fill the details correctly"})
+        }
         
     }
 

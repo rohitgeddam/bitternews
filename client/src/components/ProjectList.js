@@ -89,7 +89,7 @@ function ProjectList({projectList, refetchList }) {
             title={item.title}
             description={item.description}
             postedOn={item.postedOn}
-            postedBy={"rohitgeddam"}
+            postedBy={item.postedBy.username}
             voteCount={item.voteCount }
             upVote={upVote}
 

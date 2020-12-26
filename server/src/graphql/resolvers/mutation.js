@@ -1,7 +1,7 @@
 
 
 const { signJwt, comparePassword, hashPassword, requestGithubUser } = require("../../utils")
-
+const emailValidator = require("email-validator")
 const mutation = {
  
     addProject: async (root, args, context) => {
@@ -11,29 +11,35 @@ const mutation = {
 
         const userId = context.userId;
 
-        const currentUser = await context.db.User.findOne({_id: userId}).exec()
+        if(userId){
+            const currentUser = await context.db.User.findOne({_id: userId}).exec()
 
 
-        let project = new context.db.Project({
-            title: args.title,
-            description: args.description,
-            postedBy: currentUser
-        })
-        await project.save((err, project) => {
-            if(err){
-                return {
-                    status: "Failure",
-                    data
-                }
-            } 
-        })
+            let project = new context.db.Project({
+                title: args.title,
+                description: args.description,
+                postedBy: currentUser
+            })
+            await project.save((err, project) => {
+                if(err){
+                    return {
+                        status: "Failure",
+                        data
+                    }
+                } 
+            })
+    
+            status = "Success"
+            data = project
+            
+        } 
 
-        status = "Success"
-        data = project
         return {
             status,
             data
         }
+        
+        
     },
 
     signIn: async (root, args, context ) => {
@@ -78,28 +84,35 @@ const mutation = {
 
         if (!existsEmail && !existsUsername){
             hashedPassword = hashPassword(args.password)
-        let newUser = new context.db.User({
-            username: args.username,
-            email: args.email,
-            password: hashedPassword
-        })
-        newUser.save((err) => {
-            if(err){
-                    message = "Failed to save user"
-                    return {
-                        status,
-                        message,
-                        data
-                    }
+            isEmailValid = emailValidator.validate(args.email);
+
+            if(isEmailValid){
+                let newUser = new context.db.User({
+                    username: args.username,
+                    email: args.email,
+                    password: hashedPassword
+                    })
+                    newUser.save((err) => {
+                        if(err){
+                                message = "Failed to save user"
+                                return {
+                                    status,
+                                    message,
+                                    data
+                                }
+                        }
+                    })
+                    let token = signJwt({id: newUser.id})
+                        status = "Success"
+                        message = "user created successfully"
+                        data = {
+                            token: token,
+                            user: newUser,
+                        }
+            } else {
+                message = "Invalid Email Address"
             }
-        })
-        let token = signJwt({id: newUser.id})
-            status = "Success"
-            message = "user created successfully"
-            data = {
-                token: token,
-                user: newUser,
-            }
+           
         } else {
                 message = "User already exists"
         }
@@ -162,36 +175,40 @@ const mutation = {
         }
         const userId = context.userId;
         const projectId = args.projectId;
-        console.log("USERID", userId, projectId, )
         // TODO if user id null return error
 
-        // find the project
-        const project = await context.db.Project.findOne({_id: projectId}).exec()
+        if(userId){
+            // find the project
+            const project = await context.db.Project.findOne({_id: projectId}).exec()
 
-        // check if vote already exists
-        const previousVote = await context.db.Vote.findOne({voter: userId, votedFor: projectId}).exec();
+            // check if vote already exists
+            const previousVote = await context.db.Vote.findOne({voter: userId, votedFor: projectId}).exec();
 
-        // create a new vote
-        if (!previousVote) {
-            const newVote = new context.db.Vote({
-                voter: userId,
-                votedFor: projectId
-            })
-            try {
-                newVote.save()
-                project.votes.push(newVote);
-                project.voteCount = project.voteCount + 1;
-                project.save();
-                response.status = "Success";
-                response.message = "Vote Recorded",
-                response.data = newVote;
-            } catch (err) {
-                console.log(err)
+            // create a new vote
+            if (!previousVote) {
+                const newVote = new context.db.Vote({
+                    voter: userId,
+                    votedFor: projectId
+                })
+                try {
+                    newVote.save()
+                    project.votes.push(newVote);
+                    project.voteCount = project.voteCount + 1;
+                    project.save();
+                    response.status = "Success";
+                    response.message = "Vote Recorded",
+                    response.data = newVote;
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                response.message = "Vote already exists";
+                response.data = previousVote;
             }
         } else {
-            response.message = "Vote already exists";
-            response.data = previousVote;
+            response.message = "User not authenticated"
         }
+        
 
         //
         return response;

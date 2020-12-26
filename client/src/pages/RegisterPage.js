@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useHistory } from 'react-router';
-
+import { validate } from 'email-validator'
 import UserContext from '../UserContext'
 import {AUTH_TOKEN} from '../constants'
 import '../styles/auth.scss'
@@ -70,8 +70,15 @@ function Register() {
 
    const checkDetails = () => {
        if (details.username.trim() === "" || details.email.trim() === "" || details.password.trim() === ""){
+        setError({isError:true, message: "Please fill the details correctly"})
+
         return false;
        }
+       if (!validate(details.email)) {
+        setError({isError:true, message: 'invalid email address'})
+        return false;
+         
+    }
        return true;
    }
 
@@ -94,9 +101,7 @@ function Register() {
         e.preventDefault();
         if (checkDetails()){
             signUpUser()
-        } else {
-            setError({isError:true, message: "Please fill the details correctly"})
-        }
+        } 
         
     }
 
